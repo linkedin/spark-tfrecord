@@ -1,7 +1,7 @@
 # Spark-TFRecord
 
-A library for reading and writing the [Tensorflow TFRecord](https://www.tensorflow.org/how_tos/reading_data/) data from [Apache Spark](http://spark.apache.org/).
-The implementation is based on Spark [Tensorflow Connector](https://github.com/tensorflow/ecosystem/tree/master/spark/spark-tensorflow-connector), but it is rewritten in Spark FileFormat trait to provide the partitioning function that is missing in [Spark Tensorflow Connector](https://github.com/tensorflow/ecosystem/issues/119).
+A library for reading and writing [Tensorflow TFRecord](https://www.tensorflow.org/how_tos/reading_data/) data from [Apache Spark](http://spark.apache.org/).
+The implementation is based on [Spark Tensorflow Connector](https://github.com/tensorflow/ecosystem/tree/master/spark/spark-tensorflow-connector), but it is rewritten in Spark FileFormat trait to provide the partitioning function that is missing in [Spark Tensorflow Connector](https://github.com/tensorflow/ecosystem/issues/119).
 
 ## Prerequisites
 
@@ -21,13 +21,13 @@ mvn clean install
 
 After installation (or deployment), the package can be used with the following dependency:
 
-    ```xml
-    <dependency>
-      <groupId>com.linkedin</groupId>
-      <artifactId>spark-tfrecord_2.11</artifactId>
-      <version>1.10.0</version>
-    </dependency>
-    ```
+```xml
+<dependency>
+  <groupId>com.linkedin</groupId>
+  <artifactId>spark-tfrecord_2.11</artifactId>
+  <version>1.10.0</version>
+</dependency>
+```
 
 ## Using Spark Shell
 Run this library in Spark using the `--jars` command line option in `spark-shell`, `pyspark` or `spark-submit`. For example:
@@ -152,6 +152,51 @@ importedDf1.show()
 //Read TFRecords into DataFrame using custom schema
 val importedDf2: DataFrame = spark.read.format("tfrecord").schema(schema).load(path)
 importedDf2.show()
+```
+
+#### Use partitionBy
+The following example shows to how to use partitionBy, which is not supported by [Spark Tensorflow Connector](https://github.com/tensorflow/ecosystem/tree/master/spark/spark-tensorflow-connector)
+
+```scala
+
+// launch spark-shell with the following command:
+// SPARK_HOME/bin/spark-shell --jar target/spark-tfrecord_2.11-0.1.jar
+
+import org.apache.spark.sql.SaveMode
+
+val df = Seq((8, "bat"),(8, "abc"), (1, "xyz"), (2, "aaa")).toDF("number", "word")
+df.show
+
+// scala> df.show
+// +------+----+
+// |number|word|
+// +------+----+
+// |     8| bat|
+// |     8| abc|
+// |     1| xyz|
+// |     2| aaa|
+// +------+----+
+
+val tf_output_dir = "/tmp/tfrecord-test"
+
+// dump the tfrecords to files.
+df.repartition(3, col("number")).write.mode(SaveMode.Overwrite).partitionBy("number").format("tfrecord").option("recordType", "Example").save(tf_output_dir)
+
+// ls /tmp/tfrecord-test
+// _SUCCESS        number=1        number=2        number=8
+
+// read back the tfrecords from files.
+val new_df = spark.read.format("tfrecord").option("recordType", "Example").load(tf_output_dir)
+new_df.show
+
+// scala> new_df.show
+// +----+------+
+// |word|number|
+// +----+------+
+// | bat|     8|
+// | abc|     8|
+// | xyz|     1|
+// | aaa|     2|
 ```
 ## Contributing
 
