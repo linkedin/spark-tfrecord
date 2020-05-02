@@ -3,17 +3,17 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.linkedin</groupId>
+    <groupId>com.linkedin.sparktfrecord</groupId>
     <artifactId>spark-tfrecord_2.11</artifactId>
     <packaging>jar</packaging>
-    <version>0.1</version>
+    <version>0.1.1</version>
     <name>spark-tfrecord</name>
-    <url>https://www.tensorflow.org</url>
+    <url>https://github.com/linkedin/spark-tfrecord</url>
     <description>TensorFlow TFRecord data source for Apache Spark</description>
 
     <scm>
         <url>https://github.com/linkedin/spark-tfrecord.git</url>
-        <connection>git@github.com:liinkedin/spark-tfrecord.git</connection>
+        <connection>git@github.com:linkedin/spark-tfrecord.git</connection>
         <developerConnection>scm:git:https://github.com/linkedin/spark-tfrecord.git</developerConnection>
     </scm>
 
@@ -267,38 +267,14 @@
             </dependencies>
         </profile>
 
-        <!-- Two profiles are used:
-             ossrh - deploys to ossrh/maven central
-             bintray - deploys to bintray/jcenter. -->
-        <profile>
-            <id>ossrh</id>
-            <distributionManagement>
-                <!-- Sonatype requirements from http://central.sonatype.org/pages/apache-maven.html -->
-                <snapshotRepository>
-                    <id>ossrh</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-                </snapshotRepository>
-                <repository>
-                    <id>ossrh</id>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository>
-            </distributionManagement>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
         <profile>
             <id>bintray</id>
             <distributionManagement>
                 <!-- https://blog.bintray.com/2015/09/17/publishing-your-maven-project-to-bintray/ -->
                 <repository>
-                    <id>bintray</id>
-                    <url>https://api.bintray.com/maven/google/tensorflow/tensorflow/;publish=0</url>
+                    <id>bintray-linkedin-maven</id>
+                    <name>linkedin-maven</name>
+                    <url>https://api.bintray.com/maven/linkedin/maven/spark-tfrecord/;publish=1</url>
                 </repository>
             </distributionManagement>
             <build>
@@ -311,14 +287,6 @@
             </build>
         </profile>
     </profiles>
-
-    <developers>
-        <developer>
-            <name>TensorFlowers</name>
-            <organization>TensorFlow</organization>
-            <organizationUrl>http://www.tensorflow.org</organizationUrl>
-        </developer>
-    </developers>
 
     <dependencies>
         <dependency>

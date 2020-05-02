@@ -1,7 +1,7 @@
 # Spark-TFRecord
 
 A library for reading and writing [Tensorflow TFRecord](https://www.tensorflow.org/how_tos/reading_data/) data from [Apache Spark](http://spark.apache.org/).
-The implementation is based on [Spark Tensorflow Connector](https://github.com/tensorflow/ecosystem/tree/master/spark/spark-tensorflow-connector), but it is rewritten in Spark FileFormat trait to provide the partitioning function that is missing in [Spark Tensorflow Connector](https://github.com/tensorflow/ecosystem/issues/119).
+The implementation is based on [Spark Tensorflow Connector](https://github.com/tensorflow/ecosystem/tree/master/spark/spark-tensorflow-connector), but it is rewritten in Spark FileFormat trait to provide the partitioning function.
 
 ## Prerequisites
 
@@ -23,9 +23,9 @@ After installation (or deployment), the package can be used with the following d
 
 ```xml
 <dependency>
-  <groupId>com.linkedin</groupId>
+  <groupId>com.linkedin.sparktfrecord</groupId>
   <artifactId>spark-tfrecord_2.11</artifactId>
-  <version>1.10.0</version>
+  <version>0.1.1</version>
 </dependency>
 ```
 
@@ -33,7 +33,7 @@ After installation (or deployment), the package can be used with the following d
 Run this library in Spark using the `--jars` command line option in `spark-shell`, `pyspark` or `spark-submit`. For example:
 
 ```sh
-$SPARK_HOME/bin/spark-shell --jars target/spark-tfrecord_2.11-0.1.jar
+$SPARK_HOME/bin/spark-shell --jars target/spark-tfrecord_2.11-0.1.1.jar
 ```
 
 ## Features
@@ -90,7 +90,7 @@ The supported Spark data types are listed in the table below:
 
 Run PySpark with the spark_connector in the jars argument as shown below:
 
-`$SPARK_HOME/bin/pyspark --jars target/spark-tfrecord_2.11-0.1.jar`
+`$SPARK_HOME/bin/pyspark --jars target/spark-tfrecord_2.11-0.1.1.jar`
 
 The following Python code snippet demonstrates usage on test data.
 
@@ -115,7 +115,7 @@ df.show()
 ### Scala API
 Run Spark shell with the spark_connector in the jars argument as shown below:
 ```sh
-$SPARK_HOME/bin/spark-shell --jars target/spark-tfrecord_2.11-0.1.jar
+$SPARK_HOME/bin/spark-shell --jars target/spark-tfrecord_2.11-0.1.1.jar
 ```
 
 The following Scala code snippet demonstrates usage on test data.
@@ -160,7 +160,7 @@ The following example shows to how to use partitionBy, which is not supported by
 ```scala
 
 // launch spark-shell with the following command:
-// SPARK_HOME/bin/spark-shell --jar target/spark-tfrecord_2.11-0.1.jar
+// SPARK_HOME/bin/spark-shell --jar target/spark-tfrecord_2.11-0.1.1.jar
 
 import org.apache.spark.sql.SaveMode
 
