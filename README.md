@@ -56,6 +56,7 @@ The writer support partitionBy operation. So the following command will partitio
 ```
 df.write.mode(SaveMode.Overwrite).partitionBy("partitionColumn").format("tfrecord").option("recordType", "Example").save(output_dir)
 ```
+Note we use `format("tfrecord")` instead `format("tfrecords")`. So if you migrate from Spark-Tensorflow-Connector, make sure this is changed accordingly.
 
 ## Schema inference
 This library supports automatic schema inference when reading TensorFlow records into Spark DataFrames.
