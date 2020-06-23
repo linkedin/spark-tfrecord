@@ -15,8 +15,13 @@ Build the library using Maven 3.3.9 or newer as shown below:
 git clone https://github.com/linkedin/spark-tfrecord.git
 cd spark-tfrecord
 mvn clean install
-# one can specific the spark version and tensorflow hadoop version
-# mvn clean install -Dspark.version=2.2.1 -Dtensorflow.hadoop.version=1.15.0
+
+# One can specify the spark version and tensorflow hadoop version, for example
+mvn clean install -Dspark.version=2.4.6 -Dtensorflow.hadoop.version=1.15.0
+
+# Or for building with Spark 3, use the following
+mvn clean install -Dspark.version=3.0.0 -Dscala.binary.version=2.12 -Dscala.compiler.version=2.12.11  -Dscala.test.version=3.0.0
+# In this instance we would suggest changing the `<artifactId>` in the `pom.xml` to spark-tfrecord_2.12
 ```
 
 After installation (or deployment), the package can be used with the following dependency:

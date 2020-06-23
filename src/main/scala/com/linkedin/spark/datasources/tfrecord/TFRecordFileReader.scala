@@ -35,9 +35,9 @@ object TFRecordFileReader {
     // Ensure that the reader is closed even if the task fails or doesn't consume the entire
     // iterator of records.
     Option(TaskContext.get()).foreach { taskContext =>
-      taskContext.addTaskCompletionListener { _ =>
+      taskContext.addTaskCompletionListener[Unit]((_: TaskContext) =>
         recordReader.close()
-      }
+      )
     }
 
     recordReader.initialize(inputSplit, hadoopAttemptContext)
