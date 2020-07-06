@@ -1,0 +1,15 @@
+dist: trusty
+language: scala
+scala:
+  - 2.11.8
+git:
+  depth: 3
+jdk:
+  - oraclejdk8
+script: "mvn test -B"
+
+# safelist
+branches:
+  only:
+  - master
+  - spark-2.3
