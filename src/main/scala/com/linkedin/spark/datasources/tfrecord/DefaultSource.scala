@@ -33,8 +33,11 @@ class DefaultSource extends FileFormat with DataSourceRegister {
       options: Map[String, String],
       files: Seq[FileStatus]): Option[StructType] = {
     val recordType = options.getOrElse("recordType", "Example")
-    // use the first file
-    val rdd = sparkSession.sparkContext.newAPIHadoopFile(files(0).getPath.toString,
+    // Use the first non-empty file
+    // For smaller dataset, it is possible the first a few part files have zero length
+    val nonZeroIndex = files.indexWhere(f => f.getLen > 0)
+    val fileIndex = if (nonZeroIndex > 0) nonZeroIndex else 0
+    val rdd = sparkSession.sparkContext.newAPIHadoopFile(files(fileIndex).getPath.toString,
       classOf[TFRecordFileInputFormat], classOf[BytesWritable], classOf[NullWritable])
     val finalSchema = recordType match {
       case "Example" =>
