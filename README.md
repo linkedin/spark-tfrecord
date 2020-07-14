@@ -3,30 +3,39 @@
 A library for reading and writing [Tensorflow TFRecord](https://www.tensorflow.org/how_tos/reading_data/) data from [Apache Spark](http://spark.apache.org/).
 The implementation is based on [Spark Tensorflow Connector](https://github.com/tensorflow/ecosystem/tree/master/spark/spark-tensorflow-connector), but it is rewritten in Spark FileFormat trait to provide the partitioning function.
 
-## Prerequisites
+## Including the library
 
-[Apache Spark 2.0 (or later)](http://spark.apache.org/)
+The artifacts are published to [bintray](https://bintray.com/linkedin/maven/spark-tfrecord) and [maven central](https://search.maven.org/search?q=spark-tfrecord) repositories.
+Current releases were built with scala-2.11.
+
+- Version 0.1.x is based on Spark 2.3.
+- Version 0.2.x is based on Spark 3.0.
+
+To use the package, please include the dependency as follows
+
+```xml
+<dependency>
+  <groupId>com.linkedin.sparktfrecord</groupId>
+  <artifactId>spark-tfrecord_2.11</artifactId>
+  <version>your.version</version>
+</dependency>
+```
 
 ## Building the library
-Build the library using Maven 3.3.9 or newer as shown below:
+The library can be built with Maven 3.3.9 or newer as shown below:
 
 ```sh
 # Build Spark-TFRecord
 git clone https://github.com/linkedin/spark-tfrecord.git
 cd spark-tfrecord
 mvn clean install
-# one can specific the spark version and tensorflow hadoop version
-# mvn clean install -Dspark.version=2.2.1 -Dtensorflow.hadoop.version=1.15.0
-```
 
-After installation (or deployment), the package can be used with the following dependency:
+# One can specify the spark version and tensorflow hadoop version, for example
+mvn clean install -Dspark.version=2.4.6 -Dtensorflow.hadoop.version=1.15.0
 
-```xml
-<dependency>
-  <groupId>com.linkedin.sparktfrecord</groupId>
-  <artifactId>spark-tfrecord_2.11</artifactId>
-  <version>0.1.1</version>
-</dependency>
+# Or for building with Spark 3, use the following
+mvn clean install -Dspark.version=3.0.0 -Dscala.binary.version=2.12 -Dscala.compiler.version=2.12.11  -Dscala.test.version=3.0.0
+# In this instance we would suggest changing the `<artifactId>` in the `pom.xml` to spark-tfrecord_2.12
 ```
 
 ## Using Spark Shell
