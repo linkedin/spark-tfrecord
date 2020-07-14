@@ -11,6 +11,14 @@
     <url>https://github.com/linkedin/spark-tfrecord</url>
     <description>TensorFlow TFRecord data source for Apache Spark</description>
 
+    <licenses>
+        <license>
+            <name>BSD 2-CLAUSE LICENSE</name>
+            <url>https://github.com/linkedin/spark-tfrecord/blob/master/LICENSE.md</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <scm>
         <url>https://github.com/linkedin/spark-tfrecord.git</url>
         <connection>git@github.com:linkedin/spark-tfrecord.git</connection>
@@ -267,6 +275,32 @@
             </dependencies>
         </profile>
 
+        <!-- Two profiles are used:
+             ossrh - deploys to ossrh/maven central
+             bintray - deploys to bintray/jcenter. -->
+        <profile>
+            <id>ossrh</id>
+            <distributionManagement>
+                <!-- Sonatype requirements from http://central.sonatype.org/pages/apache-maven.html -->
+                <snapshotRepository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+                <repository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <profile>
             <id>bintray</id>
             <distributionManagement>
@@ -287,6 +321,14 @@
             </build>
         </profile>
     </profiles>
+
+    <developers>
+        <developer>
+            <name>spark-tfrecord developers</name>
+            <organization>LinkedIn</organization>
+            <organizationUrl>http://www.linkedin.com</organizationUrl>
+        </developer>
+    </developers>
 
     <dependencies>
         <dependency>
