@@ -47,7 +47,7 @@ object TensorFlowInferSchema {
     val columnsList = rootTypes.map {
       case (featureName, featureType) =>
         if (featureType == null) {
-          StructField(featureName, StringType)
+          StructField(featureName, NullType)
         }
         else {
           StructField(featureName, featureType)
