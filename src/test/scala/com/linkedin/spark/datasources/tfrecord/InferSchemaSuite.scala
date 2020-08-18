@@ -32,6 +32,8 @@ class InferSchemaSuite extends SharedSparkSessionSuite {
   val strList = Feature.newBuilder().setBytesList(BytesList.newBuilder().addValue(ByteString.copyFrom("r1".getBytes))
     .addValue(ByteString.copyFrom("r2".getBytes)).build()).build()
 
+  val emptyFloatList = Feature.newBuilder().setFloatList(FloatList.newBuilder().build()).build()
+
   "InferSchema" should {
 
     "Infer schema from Example records" in {
@@ -135,7 +137,21 @@ class InferSchemaSuite extends SharedSparkSessionSuite {
       val rdd: RDD[Long] = spark.sparkContext.parallelize(List(5L, 6L))
       TensorFlowInferSchema(rdd)
     }
+  }
 
+  "Should have a nullType if there are no elements" in {
+    //Build sequence example1
+    val features1 = Features.newBuilder().putFeature("emptyFloatFeature", emptyFloatList)
+
+    val seqExample1 = SequenceExample.newBuilder()
+      .setContext(features1)
+      .build()
+
+    val seqExampleRdd: RDD[SequenceExample] = spark.sparkContext.parallelize(List(seqExample1))
+    val inferredSchema = TensorFlowInferSchema(seqExampleRdd)
+    assert(inferredSchema.fields.length == 1)
+    val schemaMap = inferredSchema.map(f => (f.name, f.dataType)).toMap
+    assert(schemaMap("emptyFloatFeature") === NullType)
   }
 }
 
