@@ -32,7 +32,6 @@
         <scala.test.version>3.2.2</scala.test.version>
         <maven.compiler.version>3.0</maven.compiler.version>
         <java.version>1.8</java.version>
-        <spark.version>2.4.6</spark.version>
         <junit.version>4.11</junit.version>
         <tensorflow.hadoop.version>1.15.0</tensorflow.hadoop.version>
     </properties>
@@ -343,6 +342,7 @@
             <properties>
                 <scala.binary.version>2.11</scala.binary.version>
                 <scala.version>2.11.12</scala.version>
+                <spark.version>2.4.6</spark.version>
             </properties>
         </profile>
 
@@ -351,6 +351,7 @@
             <properties>
                 <scala.binary.version>2.12</scala.binary.version>
                 <scala.version>2.12.12</scala.version>
+                <spark.version>3.0.0</spark.version>
             </properties>
         </profile>
 
