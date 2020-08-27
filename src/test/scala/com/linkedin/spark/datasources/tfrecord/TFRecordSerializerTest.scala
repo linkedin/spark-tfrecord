@@ -20,14 +20,12 @@ import org.tensorflow.example._
 import org.apache.spark.sql.types.{StructField, _}
 import org.apache.spark.sql.catalyst.util.{ArrayData, GenericArrayData}
 import org.apache.spark.unsafe.types.UTF8String
-import org.scalatest._
-import matchers.should._
-import org.scalatest.wordspec.AnyWordSpecLike
 
 import scala.collection.JavaConverters._
 import TestingUtils._
+import org.scalatest.{Matchers, WordSpecLike}
 
-class TFRecordSerializerTest extends AnyWordSpecLike with Matchers {
+class TFRecordSerializerTest extends WordSpecLike with Matchers {
 
   private def createArray(values: Any*): ArrayData =
     new GenericArrayData(values.toArray)

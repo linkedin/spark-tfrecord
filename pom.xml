@@ -29,7 +29,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <scala.maven.version>3.2.2</scala.maven.version>
         <scalatest.maven.version>1.0</scalatest.maven.version>
-        <scala.test.version>3.2.2</scala.test.version>
+        <scala.test.version>3.0.8</scala.test.version>
+        <spark.version>2.4.6</spark.version>
         <maven.compiler.version>3.0</maven.compiler.version>
         <java.version>1.8</java.version>
         <junit.version>4.11</junit.version>
@@ -342,7 +343,6 @@
             <properties>
                 <scala.binary.version>2.11</scala.binary.version>
                 <scala.version>2.11.12</scala.version>
-                <spark.version>2.4.6</spark.version>
             </properties>
         </profile>
 
@@ -351,7 +351,6 @@
             <properties>
                 <scala.binary.version>2.12</scala.binary.version>
                 <scala.version>2.12.12</scala.version>
-                <spark.version>3.0.0</spark.version>
             </properties>
         </profile>
 
