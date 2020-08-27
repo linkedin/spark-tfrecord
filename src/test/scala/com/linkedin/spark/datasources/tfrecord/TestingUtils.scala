@@ -24,7 +24,7 @@ import org.apache.spark.sql.catalyst.expressions.{
 import org.apache.spark.sql.catalyst.util.ArrayData
 import org.apache.spark.sql.types._
 import org.scalatest._
-import matchers._
+import matchers.should._
 
 object TestingUtils extends Matchers {
 

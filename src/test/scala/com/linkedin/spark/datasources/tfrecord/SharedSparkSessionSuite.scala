@@ -21,9 +21,10 @@ import org.apache.commons.io.FileUtils
 import org.apache.spark.SharedSparkSession
 import org.junit.{After, Before}
 import org.scalatest._
-import matchers._
+import matchers.should._
+import org.scalatest.wordspec.AnyWordSpecLike
 
-trait BaseSuite extends WordSpecLike with Matchers with BeforeAndAfterAll
+trait BaseSuite extends AnyWordSpecLike with Matchers with BeforeAndAfterAll
 
 class SharedSparkSessionSuite extends SharedSparkSession with BaseSuite {
   val TF_SANDBOX_DIR = "tf-sandbox"

@@ -23,9 +23,10 @@ import org.apache.spark.unsafe.types.UTF8String
 import org.tensorflow.example._
 import TestingUtils._
 import org.scalatest._
-import matchers._
+import matchers.should._
+import org.scalatest.wordspec.AnyWordSpecLike
 
-class TFRecordDeserializerTest extends WordSpec with Matchers {
+class TFRecordDeserializerTest extends AnyWordSpecLike with Matchers {
   val intFeature = Feature
     .newBuilder()
     .setInt64List(Int64List.newBuilder().addValue(1))

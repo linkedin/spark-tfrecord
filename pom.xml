@@ -342,7 +342,7 @@
             <id>scala-2.11</id>
             <properties>
                 <scala.binary.version>2.11</scala.binary.version>
-                <scala.version>2.11.8</scala.version>
+                <scala.version>2.11.12</scala.version>
             </properties>
         </profile>
 
