@@ -6,10 +6,9 @@ The implementation is based on [Spark Tensorflow Connector](https://github.com/t
 ## Including the library
 
 The artifacts are published to [bintray](https://bintray.com/linkedin/maven/spark-tfrecord) and [maven central](https://search.maven.org/search?q=spark-tfrecord) repositories.
-Current releases were built with scala-2.11.
 
-- Version 0.1.x is based on Spark 2.3.
-- Version 0.2.x is based on Spark 3.0.
+- Version 0.1.x targets Spark 2.3 and Scala 2.11
+- Version 0.2.x targets Spark 2.4 and both Scala 2.11 and 2.12
 
 To use the package, please include the dependency as follows
 
@@ -28,14 +27,13 @@ The library can be built with Maven 3.3.9 or newer as shown below:
 # Build Spark-TFRecord
 git clone https://github.com/linkedin/spark-tfrecord.git
 cd spark-tfrecord
-mvn clean install
+mvn -Pscala-2.11 clean install
 
 # One can specify the spark version and tensorflow hadoop version, for example
-mvn clean install -Dspark.version=2.4.6 -Dtensorflow.hadoop.version=1.15.0
+mvn -Pscala-2.11 clean install -Dspark.version=2.4.6 -Dtensorflow.hadoop.version=1.15.0
 
 # Or for building with Spark 3, use the following
-mvn clean install -Dspark.version=3.0.0 -Dscala.binary.version=2.12 -Dscala.compiler.version=2.12.11  -Dscala.test.version=3.0.0
-# In this instance we would suggest changing the `<artifactId>` in the `pom.xml` to spark-tfrecord_2.12
+mvn -Pscala-2.12 clean install -Dspark.version=3.0.0
 ```
 
 ## Using Spark Shell
