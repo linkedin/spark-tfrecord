@@ -1,12 +1,17 @@
 dist: trusty
 language: scala
-scala:
-  - 2.11.8
 git:
   depth: 3
 jdk:
   - oraclejdk8
-script: "mvn test -B"
+
+matrix:
+  include:
+    - scala: 2.11.12
+      script: "mvn test -B -Pscala-2.11"
+
+    - scala: 2.12.12
+      script: "mvn test -B -Pscala-2.12"
 
 # safelist
 branches:
