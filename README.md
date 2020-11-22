@@ -9,13 +9,14 @@ The artifacts are published to [bintray](https://bintray.com/linkedin/maven/spar
 
 - Version 0.1.x targets Spark 2.3 and Scala 2.11
 - Version 0.2.x targets Spark 2.4 and both Scala 2.11 and 2.12
+- Version 0.3.x targets Spark 3.0 and Scala 2.12
 
 To use the package, please include the dependency as follows
 
 ```xml
 <dependency>
   <groupId>com.linkedin.sparktfrecord</groupId>
-  <artifactId>spark-tfrecord_2.11</artifactId>
+  <artifactId>spark-tfrecord_2.12</artifactId>
   <version>your.version</version>
 </dependency>
 ```
@@ -27,20 +28,17 @@ The library can be built with Maven 3.3.9 or newer as shown below:
 # Build Spark-TFRecord
 git clone https://github.com/linkedin/spark-tfrecord.git
 cd spark-tfrecord
-mvn -Pscala-2.11 clean install
+mvn -Pscala-2.12 clean install
 
 # One can specify the spark version and tensorflow hadoop version, for example
-mvn -Pscala-2.11 clean install -Dspark.version=2.4.6 -Dtensorflow.hadoop.version=1.15.0
-
-# Or for building with Spark 3, use the following
-mvn -Pscala-2.12 clean install -Dspark.version=3.0.0
+mvn -Pscala-2.12 clean install -Dspark.version=3.0.0 -Dtensorflow.hadoop.version=1.15.0
 ```
 
 ## Using Spark Shell
 Run this library in Spark using the `--jars` command line option in `spark-shell`, `pyspark` or `spark-submit`. For example:
 
 ```sh
-$SPARK_HOME/bin/spark-shell --jars target/spark-tfrecord_2.11-0.1.1.jar
+$SPARK_HOME/bin/spark-shell --jars target/spark-tfrecord_2.12-0.3.0.jar
 ```
 
 ## Features
@@ -98,7 +96,7 @@ The supported Spark data types are listed in the table below:
 
 Run PySpark with the spark_connector in the jars argument as shown below:
 
-`$SPARK_HOME/bin/pyspark --jars target/spark-tfrecord_2.11-0.1.1.jar`
+`$SPARK_HOME/bin/pyspark --jars target/spark-tfrecord_2.12-0.3.0.jar`
 
 The following Python code snippet demonstrates usage on test data.
 
@@ -123,7 +121,7 @@ df.show()
 ### Scala API
 Run Spark shell with the spark_connector in the jars argument as shown below:
 ```sh
-$SPARK_HOME/bin/spark-shell --jars target/spark-tfrecord_2.11-0.1.1.jar
+$SPARK_HOME/bin/spark-shell --jars target/spark-tfrecord_2.12-0.3.0.jar
 ```
 
 The following Scala code snippet demonstrates usage on test data.
@@ -168,7 +166,7 @@ The following example shows to how to use partitionBy, which is not supported by
 ```scala
 
 // launch spark-shell with the following command:
-// SPARK_HOME/bin/spark-shell --jar target/spark-tfrecord_2.11-0.1.1.jar
+// SPARK_HOME/bin/spark-shell --jar target/spark-tfrecord_2.12-0.3.0.jar
 
 import org.apache.spark.sql.SaveMode
 
