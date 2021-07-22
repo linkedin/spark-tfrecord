@@ -33,13 +33,25 @@ class DefaultSource extends FileFormat with DataSourceRegister {
       options: Map[String, String],
       files: Seq[FileStatus]): Option[StructType] = {
     val recordType = options.getOrElse("recordType", "Example")
-    // Use the first non-empty file
-    // For smaller dataset, it is possible the first a few part files have zero length
-    val nonZeroIndex = files.indexWhere(f => f.getLen > 0)
-    val fileIndex = if (nonZeroIndex > 0) nonZeroIndex else 0
-    val rdd = sparkSession.sparkContext.newAPIHadoopFile(files(fileIndex).getPath.toString,
+    files.collectFirst {
+      case f if hasSchema(sparkSession, f, recordType) => getSchemaFromFile(sparkSession, f, recordType)
+    }
+  }
+
+  /**
+   * Get schema from a file
+   * @param sparkSession A spark session.
+   * @param file The file where schema to be extracted.
+   * @param recordType Example or SequenceExample
+   * @return the extracted schema (a StructType).
+   */
+  private def getSchemaFromFile(
+      sparkSession: SparkSession,
+      file: FileStatus,
+      recordType: String): StructType = {
+    val rdd = sparkSession.sparkContext.newAPIHadoopFile(file.getPath.toString,
       classOf[TFRecordFileInputFormat], classOf[BytesWritable], classOf[NullWritable])
-    val finalSchema = recordType match {
+    recordType match {
       case "Example" =>
         val exampleRdd = rdd.map{case (bytesWritable, nullWritable) =>
           Example.parseFrom(bytesWritable.getBytes)
@@ -53,7 +65,23 @@ class DefaultSource extends FileFormat with DataSourceRegister {
       case _ =>
         throw new IllegalArgumentException(s"Unsupported recordType ${recordType}: recordType can be Example or SequenceExample")
     }
-    Some(finalSchema)
+  }
+
+  /**
+   * Check if a non-empty schema can be extracted from a file.
+   * The schema is empty if one of the following is true:
+   *   1. The file size is zero.
+   *   2. The file size is non-zero, but the schema is empty (e.g. empty .gz file)
+   * @param sparkSession A spark session.
+   * @param file The file where schema to be extracted.
+   * @param recordType Example or SequenceExample
+   * @return true if schema is non-empty.
+   */
+  private def hasSchema(
+      sparkSession: SparkSession,
+      file: FileStatus,
+      recordType: String): Boolean = {
+    (file.getLen > 0) && (getSchemaFromFile(sparkSession, file, recordType).length > 0)
   }
 
   override def prepareWrite(
