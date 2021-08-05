@@ -296,5 +296,41 @@ class TFRecordDeserializerTest extends WordSpec with Matchers {
         deserializer.bytesListFeature2SeqArrayByte(intFeature)
       }
     }
+
+    "Test deserialize rows with different features should not inherit features from previous rows" in {
+      // given features
+      val floatFeatures = Features.newBuilder().putFeature("FloatLabel", floatFeature)
+      val int64Features = Features.newBuilder().putFeature("IntLabel", intFeature)
+
+      // Define common deserializer and schema
+      val schema = StructType(List(
+        StructField("FloatLabel", FloatType),
+        StructField("IntLabel", IntegerType),
+        StructField("MissingLabel", FloatType, nullable = true))
+      )
+      val deserializer = new TFRecordDeserializer(schema)
+
+      // given rows with different features - row 1 has only FloatLabel feature
+      val expectedInternalRow1 = InternalRow.fromSeq(
+        Array[Any](10.0F, null, null)
+      )
+      val example1 = Example.newBuilder()
+        .setFeatures(floatFeatures)
+        .build()
+      val actualInternalRow1 = deserializer.deserializeExample(example1)
+      assert(actualInternalRow1 ~== (expectedInternalRow1, schema))
+
+      // .. and the second row has only IntLabel feature
+      val expectedInternalRow2 = InternalRow.fromSeq(
+        Array[Any](null, 1, null)
+      )
+      val example2 = Example.newBuilder()
+        .setFeatures(int64Features)
+        .build()
+      val actualInternalRow2 = deserializer.deserializeExample(example2)
+      assert(actualInternalRow2 ~== (expectedInternalRow2, schema))
+
+    }
+
   }
 }

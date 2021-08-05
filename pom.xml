@@ -6,7 +6,7 @@
     <groupId>com.linkedin.sparktfrecord</groupId>
     <artifactId>spark-tfrecord_2.11</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.3</version>
+    <version>0.1.4</version>
     <name>spark-tfrecord</name>
     <url>https://github.com/linkedin/spark-tfrecord</url>
     <description>TensorFlow TFRecord data source for Apache Spark</description>
