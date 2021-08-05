@@ -14,10 +14,9 @@ import scala.collection.JavaConverters._
  */
 class TFRecordDeserializer(dataSchema: StructType) {
 
-  private val resultRow = new SpecificInternalRow(dataSchema.map(_.dataType))
-
   def deserializeExample(example: Example): InternalRow = {
     val featureMap = example.getFeatures.getFeatureMap.asScala
+    val resultRow = new SpecificInternalRow(dataSchema.map(_.dataType))
     dataSchema.zipWithIndex.foreach {
       case (field, index) =>
         val feature = featureMap.get(field.name)
@@ -35,6 +34,7 @@ class TFRecordDeserializer(dataSchema: StructType) {
 
     val featureMap = sequenceExample.getContext.getFeatureMap.asScala
     val featureListMap = sequenceExample.getFeatureLists.getFeatureListMap.asScala
+    val resultRow = new SpecificInternalRow(dataSchema.map(_.dataType))
 
     dataSchema.zipWithIndex.foreach {
       case (field, index) =>
