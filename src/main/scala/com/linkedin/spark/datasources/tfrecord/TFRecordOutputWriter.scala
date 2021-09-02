@@ -36,7 +36,7 @@ class TFRecordOutputWriter(
   }
 
   override def close(): Unit = {
-    outputStream.close()
     dataOutputStream.close()
+    outputStream.close()
   }
 }
