@@ -10,7 +10,7 @@ import org.tensorflow.hadoop.util.TFRecordWriter
 
 
 class TFRecordOutputWriter(
-    path: String,
+    val path: String,
     options: Map[String, String],
     dataSchema: StructType,
     context: TaskAttemptContext)
