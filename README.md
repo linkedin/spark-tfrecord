@@ -100,7 +100,7 @@ Run PySpark with the spark_connector in the jars argument as shown below:
 
 The following Python code snippet demonstrates usage on test data.
 
-```
+```python
 from pyspark.sql.types import *
 
 path = "test-output.tfrecord"
