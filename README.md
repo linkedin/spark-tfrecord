@@ -10,6 +10,7 @@ The artifacts are published to [bintray](https://bintray.com/linkedin/maven/spar
 - Version 0.1.x targets Spark 2.3 and Scala 2.11
 - Version 0.2.x targets Spark 2.4 and both Scala 2.11 and 2.12
 - Version 0.3.x targets Spark 3.0 and Scala 2.12
+- Version 0.4.x targets Spark 3.2 and Scala 2.12
 
 To use the package, please include the dependency as follows
 
