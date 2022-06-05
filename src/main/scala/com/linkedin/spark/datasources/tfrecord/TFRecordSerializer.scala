@@ -97,16 +97,16 @@ class TFRecordSerializer(dataSchema: StructType) {
       val arrayData = getter.getArray(ordinal)
       val featureOrFeatureList = elementType match {
         case IntegerType =>
-          Int64ListFeature(arrayData.toIntArray().map(_.toLong))
+          Int64ListFeature(arrayData.toIntArray().toSeq.map(_.toLong))
 
         case LongType =>
-          Int64ListFeature(arrayData.toLongArray())
+          Int64ListFeature(arrayData.toLongArray().toSeq)
 
         case FloatType =>
-          floatListFeature(arrayData.toFloatArray())
+          floatListFeature(arrayData.toFloatArray().toSeq)
 
         case DoubleType =>
-          floatListFeature(arrayData.toDoubleArray().map(_.toFloat))
+          floatListFeature(arrayData.toDoubleArray().toSeq.map(_.toFloat))
 
         case  DecimalType() =>
           val elementConverter = arrayElementConverter(elementType)
@@ -117,7 +117,7 @@ class TFRecordSerializer(dataSchema: StructType) {
               result(idx) = null
             } else result(idx) = elementConverter(arrayData, idx).asInstanceOf[Decimal]
           }
-          floatListFeature(result.map(_.toFloat))
+          floatListFeature(result.toSeq.map(_.toFloat))
 
         case StringType | BinaryType =>
           val elementConverter = arrayElementConverter(elementType)
@@ -128,13 +128,13 @@ class TFRecordSerializer(dataSchema: StructType) {
               result(idx) = null
             } else result(idx) = elementConverter(arrayData, idx).asInstanceOf[Array[Byte]]
           }
-          bytesListFeature(result)
+          bytesListFeature(result.toSeq)
 
         // 2-dimensional array to TensorFlow "FeatureList"
         case ArrayType(_, _) =>
           val elementConverter = newFeatureConverter(elementType)
           val featureList = FeatureList.newBuilder()
-          for (idx <- 0 until arrayData.numElements) {
+          for (idx <- 0 until arrayData.numElements()) {
             val feature = elementConverter(arrayData, idx).asInstanceOf[Feature]
             featureList.addFeature(feature)
           }
