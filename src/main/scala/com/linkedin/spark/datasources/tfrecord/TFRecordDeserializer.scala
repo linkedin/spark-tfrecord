@@ -7,7 +7,7 @@ import org.apache.spark.sql.types.{DecimalType, DoubleType, _}
 import org.apache.spark.unsafe.types.UTF8String
 import org.tensorflow.example._
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 /**
  * Creates a TFRecord deserializer to deserialize Tfrecord example or sequenceExample to Spark InternalRow
@@ -196,7 +196,7 @@ class TFRecordDeserializer(dataSchema: StructType) {
   def bytesListFeature2SeqArrayByte(feature: Feature): Seq[Array[Byte]] = {
     require(feature != null && feature.getKindCase.getNumber == Feature.BYTES_LIST_FIELD_NUMBER, "Feature must be of type ByteList")
     try {
-      feature.getBytesList.getValueList.asScala.map((byteArray) => byteArray.asScala.toArray.map(_.toByte))
+      feature.getBytesList.getValueList.asScala.toSeq.map((byteArray) => byteArray.asScala.toArray.map(_.toByte))
     }
     catch {
       case ex: Exception =>

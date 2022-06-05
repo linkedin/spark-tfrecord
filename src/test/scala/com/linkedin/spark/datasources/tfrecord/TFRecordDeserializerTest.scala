@@ -273,7 +273,7 @@ class TFRecordDeserializerTest extends WordSpec with Matchers {
     "Test bytesListFeature2SeqArrayByte" in {
       val bytesList = BytesList.newBuilder().addValue(ByteString.copyFrom("str-input".getBytes)).build()
       val bytesFeature = Feature.newBuilder().setBytesList(bytesList).build()
-      assert(deserializer.bytesListFeature2SeqArrayByte(bytesFeature).head === "str-input".getBytes.deep)
+      assert(deserializer.bytesListFeature2SeqArrayByte(bytesFeature).head.sameElements("str-input".getBytes))
 
       // Throw exception if type doesn't match
       intercept[RuntimeException] {

@@ -18,8 +18,9 @@ package com.linkedin.spark.datasources.tfrecord
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.types._
 import org.tensorflow.example.{FeatureList, SequenceExample, Example, Feature}
-import scala.collection.JavaConverters._
+
 import scala.collection.mutable
+import scala.jdk.CollectionConverters._
 import scala.reflect.runtime.universe._
 
 object TensorFlowInferSchema {

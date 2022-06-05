@@ -121,11 +121,11 @@ class TFRecordSerializerTest extends WordSpec with Matchers {
       assert(featureMap("StrArrayLabel").getBytesList.getValueList.asScala.map(_.toStringUtf8) === Seq("r2", "r3"))
 
       assert(featureMap("BinaryLabel").getKindCase.getNumber == Feature.BYTES_LIST_FIELD_NUMBER)
-      assert(featureMap("BinaryLabel").getBytesList.getValue(0).toByteArray.deep == byteArray.deep)
+      assert(featureMap("BinaryLabel").getBytesList.getValue(0).toByteArray.sameElements(byteArray))
 
       assert(featureMap("BinaryArrayLabel").getKindCase.getNumber == Feature.BYTES_LIST_FIELD_NUMBER)
       val binaryArrayValue = featureMap("BinaryArrayLabel").getBytesList.getValueList.asScala.map((byteArray) => byteArray.asScala.toArray.map(_.toByte))
-      assert(binaryArrayValue.toArray.deep == Array(byteArray, byteArray1).deep)
+      binaryArrayValue.toArray should equal(Array(byteArray, byteArray1))
     }
 
     "Serialize internalRow to tfrecord sequenceExample" in {
@@ -199,12 +199,12 @@ class TFRecordSerializerTest extends WordSpec with Matchers {
       assert(featureListMap("LongArrayOfArrayLabel").getFeatureList.asScala.map(
         _.getInt64List.getValueList.asScala.toSeq) === longListOfLists)
 
-      assert(featureListMap("FloatArrayOfArrayLabel").getFeatureList.asScala.map(
+      assert(featureListMap("FloatArrayOfArrayLabel").getFeatureList.asScala.toSeq.map(
         _.getFloatList.getValueList.asScala.map(_.toFloat).toSeq) ~== floatListOfLists.map{arr => arr.toSeq}.toSeq)
-      assert(featureListMap("DoubleArrayOfArrayLabel").getFeatureList.asScala.map(
+      assert(featureListMap("DoubleArrayOfArrayLabel").getFeatureList.asScala.toSeq.map(
         _.getFloatList.getValueList.asScala.map(_.toDouble).toSeq) ~== doubleListOfLists.map{arr => arr.toSeq}.toSeq)
 
-      assert(featureListMap("DecimalArrayOfArrayLabel").getFeatureList.asScala.map(
+      assert(featureListMap("DecimalArrayOfArrayLabel").getFeatureList.asScala.toSeq.map(
         _.getFloatList.getValueList.asScala.map(x => Decimal(x.toDouble)).toSeq) ~== decimalListOfLists.map{arr => arr.toSeq}.toSeq)
 
       assert(featureListMap("StringArrayOfArrayLabel").getFeatureList.asScala.map(
@@ -313,10 +313,10 @@ class TFRecordSerializerTest extends WordSpec with Matchers {
         Array(0xff.toByte, 0xd8.toByte),
         Array(0xff.toByte, 0xd9.toByte)))
 
-      assert(bytesFeature.getBytesList.getValueList.asScala.map(_.toByteArray.deep) ===
-        Seq(Array(0xff.toByte, 0xd8.toByte).deep))
-      assert(bytesListFeature.getBytesList.getValueList.asScala.map(_.toByteArray.deep) ===
-        Seq(Array(0xff.toByte, 0xd8.toByte).deep, Array(0xff.toByte, 0xd9.toByte).deep))
+      bytesFeature.getBytesList.getValueList.asScala.map(_.toByteArray).toArray should equal(
+        Array(Array(0xff.toByte, 0xd8.toByte)))
+      bytesListFeature.getBytesList.getValueList.asScala.map(_.toByteArray).toArray should equal(
+        Array(Array(0xff.toByte, 0xd8.toByte), Array(0xff.toByte, 0xd9.toByte)))
     }
   }
 }
