@@ -13,6 +13,10 @@ class TFRecordSerializer(dataSchema: StructType) {
 
   private val featureConverters = dataSchema.map(_.dataType).map(newFeatureConverter(_)).toArray
 
+  def serializeByteArray(row: InternalRow): Array[Byte] = {
+    row.getBinary(0)
+  }
+  
   def serializeExample(row: InternalRow): Example = {
     val features = Features.newBuilder()
     val example = Example.newBuilder()
