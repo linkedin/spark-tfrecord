@@ -25,14 +25,16 @@ class TFRecordOutputWriter(
 
   override def write(row: InternalRow): Unit = {
     val record = recordType match {
+      case "ByteArray" =>
+        serializer.serializeByteArray(row)
       case "Example" =>
-        serializer.serializeExample(row)
+        serializer.serializeExample(row).toByteArray
       case "SequenceExample" =>
-        serializer.serializeSequenceExample(row)
+        serializer.serializeSequenceExample(row).toByteArray
       case _ =>
-        throw new IllegalArgumentException(s"Unsupported recordType ${recordType}: recordType can be Example or SequenceExample")
+        throw new IllegalArgumentException(s"Unsupported recordType ${recordType}: recordType can be Byte Array, Example or SequenceExample")
     }
-    writer.write(record.toByteArray)
+    writer.write(record)
   }
 
   override def close(): Unit = {
