@@ -58,6 +58,7 @@ compression. While reading compressed TensorFlow records, `codec` can be inferre
 * `recordType`: output format of TensorFlow records. By default it is Example. Possible values are:
   * `Example`: TensorFlow [Example](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/example/example.proto) records
   * `SequenceExample`: TensorFlow [SequenceExample](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/example/example.proto) records
+  * `ByteArray`: `Array[Byte]` type in scala. For use cases when writing objects other than tensorflow Example or SequenceExample. For example, [protos](https://developers.google.com/protocol-buffers) can be transformed to byte arrays using `.toByteArray`.
 
 The writer support partitionBy operation. So the following command will partition the output by "partitionColumn".
 ```
