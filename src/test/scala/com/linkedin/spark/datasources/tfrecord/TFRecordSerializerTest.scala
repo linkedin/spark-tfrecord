@@ -30,6 +30,18 @@ class TFRecordSerializerTest extends WordSpec with Matchers {
   private def createArray(values: Any*): ArrayData = new GenericArrayData(values.toArray)
 
   "Serialize spark internalRow to tfrecord" should {
+    
+    "Serialize ByteArray internalRow to ByteArray" in {
+      val serializer = new TFRecordSerializer(new StructType())
+
+      val byteArray = Array[Byte](0xde.toByte, 0xad.toByte, 0xbe.toByte, 0xef.toByte)
+      val internalRow = InternalRow(byteArray)
+      val serializedByteArray = serializer.serializeByteArray(internalRow)
+
+      //two byte arrays should be the same, since serialization just gets byte array from internal row
+      assert(byteArray.length == serializedByteArray.length)
+      assert(byteArray.sameElements(serializedByteArray))
+    }
 
     "Serialize  decimal internalRow to tfrecord example" in {
       val schemaStructType = StructType(Array(
