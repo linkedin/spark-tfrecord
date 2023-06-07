@@ -23,7 +23,7 @@ object TFRecordFileReader {
     val recordType = options.getOrElse("recordType", "Example")
 
     val inputSplit = new FileSplit(
-      new Path(new URI(file.filePath)),
+      file.toPath,
       file.start,
       file.length,
       // The locality is decided by `getPreferredLocations` in `FileScanRDD`.
