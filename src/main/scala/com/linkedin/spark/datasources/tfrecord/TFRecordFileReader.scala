@@ -1,6 +1,5 @@
 package com.linkedin.spark.datasources.tfrecord
 
-import java.net.URI
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.Path
 import org.apache.hadoop.mapreduce.{JobID, TaskAttemptID, TaskID, TaskType}
@@ -23,7 +22,7 @@ object TFRecordFileReader {
     val recordType = options.getOrElse("recordType", "Example")
 
     val inputSplit = new FileSplit(
-      new Path(new URI(file.filePath)),
+      file.toPath,
       file.start,
       file.length,
       // The locality is decided by `getPreferredLocations` in `FileScanRDD`.
