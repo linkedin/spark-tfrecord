@@ -52,6 +52,7 @@ When reading TensorFlow records into Spark DataFrame, the API accepts several op
 * `recordType`: input format of TensorFlow records. By default it is Example. Possible values are:
   * `Example`: TensorFlow [Example](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/example/example.proto) records
   * `SequenceExample`: TensorFlow [SequenceExample](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/example/example.proto) records
+  * `ByteArray`: `Array[Byte]` type in scala.
 
 When writing Spark DataFrame to TensorFlow records, the API accepts several options:
 * `save`: output path to TensorFlow records. Output path to TensorFlow records on local or distributed filesystem.
