@@ -67,6 +67,8 @@ object TFRecordFileReader {
         havePair = false
         val bytesWritable = recordReader.getCurrentKey
         recordType match {
+          case "ByteArray" =>
+            deserializer.deserializeByteArray(bytesWritable.getBytes)
           case "Example" =>
             val example = Example.parseFrom(bytesWritable.getBytes)
             deserializer.deserializeExample(example)
@@ -74,7 +76,7 @@ object TFRecordFileReader {
             val sequenceExample = SequenceExample.parseFrom(bytesWritable.getBytes)
             deserializer.deserializeSequenceExample(sequenceExample)
           case _ =>
-            throw new IllegalArgumentException(s"Unsupported recordType ${recordType}: recordType can be Example or SequenceExample")
+            throw new IllegalArgumentException(s"Unsupported recordType ${recordType}: recordType can be ByteArray, Example or SequenceExample")
         }
       }
     }

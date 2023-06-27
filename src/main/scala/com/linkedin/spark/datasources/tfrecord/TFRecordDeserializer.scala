@@ -14,6 +14,10 @@ import scala.jdk.CollectionConverters._
  */
 class TFRecordDeserializer(dataSchema: StructType) {
 
+  def deserializeByteArray(byteArray: Array[Byte]) = {
+    InternalRow(byteArray)
+  }
+
   def deserializeExample(example: Example): InternalRow = {
     val featureMap = example.getFeatures.getFeatureMap.asScala
     val resultRow = new SpecificInternalRow(dataSchema.map(_.dataType))
