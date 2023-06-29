@@ -14,7 +14,7 @@ import scala.jdk.CollectionConverters._
  */
 class TFRecordDeserializer(dataSchema: StructType) {
 
-  def deserializeByteArray(byteArray: Array[Byte]) = {
+  def deserializeByteArray(byteArray: Array[Byte]): InternalRow = {
     InternalRow(byteArray)
   }
 
