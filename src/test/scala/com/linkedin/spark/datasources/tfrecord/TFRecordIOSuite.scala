@@ -79,6 +79,10 @@ class TFRecordIOSuite extends SharedSparkSessionSuite {
     StructField("StrArrayOfArrayLabel", ArrayType(ArrayType(StringType)))
   ))
 
+  val byteArrayTestRows: Array[Row] = Array(
+    new GenericRow(Array[Any](Array[Byte](0xde.toByte, 0xad.toByte, 0xbe.toByte, 0xef.toByte)))
+  )
+
   private def createDataFrameForExampleTFRecord() : DataFrame = {
     val rdd = spark.sparkContext.parallelize(exampleTestRows)
     spark.createDataFrame(rdd, exampleSchema)
@@ -87,6 +91,11 @@ class TFRecordIOSuite extends SharedSparkSessionSuite {
   private def createDataFrameForSequenceExampleTFRecords() : DataFrame = {
     val rdd = spark.sparkContext.parallelize(sequenceExampleTestRows)
     spark.createDataFrame(rdd, sequenceExampleSchema)
+  }
+
+  private def createDataFrameForByteArrayTFRecords() : DataFrame = {
+    val rdd = spark.sparkContext.parallelize(byteArrayTestRows)
+    spark.createDataFrame(rdd, TensorFlowInferSchema.getSchemaForByteArray())
   }
 
   private def pathExists(pathStr: String): Boolean = {
@@ -153,6 +162,21 @@ class TFRecordIOSuite extends SharedSparkSessionSuite {
 
       val expectedRows = df.collect()
       val actualRows = actualDf.collect()
+
+      assert(expectedRows === actualRows)
+    }
+
+    "Test tfrecord read/write ByteArray" in {
+
+      val path = s"$TF_SANDBOX_DIR/byteArray.tfrecord"
+
+      val df: DataFrame = createDataFrameForByteArrayTFRecords()
+      df.write.format("tfrecord").option("recordType", "ByteArray").save(path)
+
+      val importedDf: DataFrame = spark.read.format("tfrecord").option("recordType", "ByteArray").load(path)
+
+      val expectedRows = df.collect()
+      val actualRows = importedDf.collect()
 
       assert(expectedRows === actualRows)
     }

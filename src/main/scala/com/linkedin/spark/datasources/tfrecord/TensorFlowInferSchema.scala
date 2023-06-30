@@ -57,6 +57,12 @@ object TensorFlowInferSchema {
     StructType(columnsList.toSeq)
   }
 
+  def getSchemaForByteArray() : StructType = {
+    StructType(Array(
+      StructField("byteArray", BinaryType)
+    ))
+  }
+
   private def inferSequenceExampleRowType(schemaSoFar: mutable.Map[String, DataType],
                                           next: SequenceExample): mutable.Map[String, DataType] = {
     val featureMap = next.getContext.getFeatureMap.asScala

@@ -45,6 +45,19 @@ class TFRecordDeserializerTest extends WordSpec with Matchers {
 
   "Deserialize tfrecord to spark internalRow" should {
 
+    "Deserialize ByteArray to internalRow" in {
+      val schema = StructType(Array(
+        StructField("ByteArray", BinaryType)
+      ))
+
+      val byteArray = Array[Byte](0xde.toByte, 0xad.toByte, 0xbe.toByte, 0xef.toByte)
+      val expectedInternalRow = InternalRow(byteArray)
+      val deserializer = new TFRecordDeserializer(schema)
+      val actualInternalRow = deserializer.deserializeByteArray(byteArray)
+
+      assert(actualInternalRow ~== (expectedInternalRow,schema))
+    }
+
     "Serialize tfrecord example to spark internalRow" in {
       val schema = StructType(List(
         StructField("IntegerLabel", IntegerType),
@@ -331,6 +344,5 @@ class TFRecordDeserializerTest extends WordSpec with Matchers {
       assert(actualInternalRow2 ~== (expectedInternalRow2, schema))
 
     }
-
   }
 }

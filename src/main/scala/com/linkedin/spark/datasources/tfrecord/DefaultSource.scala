@@ -52,6 +52,8 @@ class DefaultSource extends FileFormat with DataSourceRegister {
     val rdd = sparkSession.sparkContext.newAPIHadoopFile(file.getPath.toString,
       classOf[TFRecordFileInputFormat], classOf[BytesWritable], classOf[NullWritable])
     recordType match {
+      case "ByteArray" =>
+        TensorFlowInferSchema.getSchemaForByteArray()
       case "Example" =>
         val exampleRdd = rdd.map{case (bytesWritable, nullWritable) =>
           Example.parseFrom(bytesWritable.getBytes)
@@ -63,7 +65,7 @@ class DefaultSource extends FileFormat with DataSourceRegister {
         }
         TensorFlowInferSchema(sequenceExampleRdd)
       case _ =>
-        throw new IllegalArgumentException(s"Unsupported recordType ${recordType}: recordType can be Example or SequenceExample")
+        throw new IllegalArgumentException(s"Unsupported recordType ${recordType}: recordType can be ByteArray, Example or SequenceExample")
     }
   }
 
